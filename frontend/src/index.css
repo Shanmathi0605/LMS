@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 transition-colors duration-300 antialiased selection:bg-primary-500 selection:text-white;
+  }
+
+  /* Dark mode global styles */
+  .dark body {
+    @apply bg-dark-bg text-slate-100;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-primary-500 text-white rounded-2xl font-bold transition-all duration-300 border border-transparent;
+    box-shadow: 
+      6px 6px 12px rgba(139, 92, 246, 0.3), 
+      -6px -6px 12px rgba(255, 255, 255, 0.9),
+      inset 4px 4px 8px rgba(255, 255, 255, 0.4),
+      inset -4px -4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .btn-primary:hover {
+    @apply translate-y-[2px];
+    box-shadow: 
+      4px 4px 8px rgba(139, 92, 246, 0.3), 
+      -4px -4px 8px rgba(255, 255, 255, 0.9),
+      inset 6px 6px 10px rgba(0, 0, 0, 0.1),
+      inset -6px -6px 10px rgba(255, 255, 255, 0.5);
+  }
+
+  .card {
+    @apply bg-slate-50 dark:bg-slate-800 rounded-3xl overflow-hidden border-2 border-white dark:border-slate-700 transition-all duration-300;
+    box-shadow: 
+      10px 10px 20px rgba(163, 177, 198, 0.4), 
+      -10px -10px 20px rgba(255, 255, 255, 1),
+      inset 6px 6px 15px rgba(255, 255, 255, 0.8),
+      inset -6px -6px 15px rgba(163, 177, 198, 0.15);
+  }
+  
+  .dark .card {
+    box-shadow: 
+      10px 10px 20px rgba(0, 0, 0, 0.5), 
+      -10px -10px 20px rgba(255, 255, 255, 0.05),
+      inset 6px 6px 15px rgba(255, 255, 255, 0.05),
+      inset -6px -6px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .input-field {
+    @apply w-full px-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-2 border-white dark:border-slate-700 focus:outline-none focus:border-primary-500 transition-all;
+    box-shadow: 
+      inset 4px 4px 8px rgba(163, 177, 198, 0.4),
+      inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+  }
+  
+  .dark .input-field {
+    box-shadow: 
+      inset 4px 4px 8px rgba(0, 0, 0, 0.4),
+      inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+  }
+  
+  .glass-nav {
+    @apply bg-slate-50 dark:bg-slate-800 border-b-2 border-white dark:border-slate-700;
+    box-shadow: 
+      0 10px 20px rgba(163, 177, 198, 0.2),
+      inset 0 -4px 8px rgba(163, 177, 198, 0.1),
+      inset 0 4px 8px rgba(255, 255, 255, 0.8);
+  }
+  
+  .dark .glass-nav {
+    box-shadow: 
+      0 10px 20px rgba(0, 0, 0, 0.4),
+      inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+      inset 0 4px 8px rgba(255, 255, 255, 0.05);
+  }
+}
