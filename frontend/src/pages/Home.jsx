@@ -107,7 +107,7 @@ const Home = () => {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/courses" className="btn-primary text-lg px-8 py-4">Explore Courses</Link>
-              <Link to="/register" className="px-8 py-4 border-2 border-slate-200 dark:border-dark-border text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-dark-surface transition-all font-semibold text-lg hover:-translate-y-1 bg-white/50 dark:bg-dark-bg/50 backdrop-blur-sm">Join for Free</Link>
+              <button onClick={() => setShowModal(true)} className="px-8 py-4 border-2 border-slate-200 dark:border-dark-border text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-dark-surface transition-all font-semibold text-lg hover:-translate-y-1 bg-white/50 dark:bg-dark-bg/50 backdrop-blur-sm">View Plan Details</button>
             </div>
           </div>
           <div className="md:w-1/2 relative animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
@@ -217,6 +217,59 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Plan Details Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-dark-surface w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden animate-fade-in-up">
+            <div className="p-6 md:p-10 flex flex-col md:flex-row gap-8">
+              
+              {/* Basic Plan */}
+              <div className="flex-1 card p-8 border-2 border-transparent hover:border-primary-500 transition-colors">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Basic Plan</h3>
+                <p className="text-slate-500 dark:text-slate-400 mb-6">Perfect for beginners</p>
+                <div className="text-4xl font-extrabold text-primary-600 mb-8">$29<span className="text-lg text-slate-500 font-medium">/month</span></div>
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                    <span className="text-green-500">✓</span> Access to 100+ basic courses
+                  </li>
+                  <li className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                    <span className="text-green-500">✓</span> Community forum access
+                  </li>
+                  <li className="flex items-center gap-3 text-slate-400">
+                    <span>×</span> No 1-on-1 mentorship
+                  </li>
+                </ul>
+                <Link to="/register" className="btn-primary w-full block text-center py-3">Get Started</Link>
+              </div>
+
+              {/* Pro Plan */}
+              <div className="flex-1 card p-8 border-2 border-primary-500 relative transform md:-translate-y-4 shadow-xl">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-primary-500 to-indigo-500 text-white px-4 py-1 rounded-full text-sm font-bold">Most Popular</div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Pro Plan</h3>
+                <p className="text-slate-500 dark:text-slate-400 mb-6">For serious learners</p>
+                <div className="text-4xl font-extrabold text-primary-600 mb-8">$79<span className="text-lg text-slate-500 font-medium">/month</span></div>
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                    <span className="text-green-500">✓</span> Unlimited access to all courses
+                  </li>
+                  <li className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                    <span className="text-green-500">✓</span> 1-on-1 mentorship sessions
+                  </li>
+                  <li className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                    <span className="text-green-500">✓</span> Real-world projects & reviews
+                  </li>
+                </ul>
+                <Link to="/register" className="btn-primary w-full block text-center py-3">Get Pro</Link>
+              </div>
+
+            </div>
+            <div className="bg-slate-50 dark:bg-dark-bg p-4 flex justify-end">
+              <button onClick={() => setShowModal(false)} className="px-6 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-semibold transition-colors">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
