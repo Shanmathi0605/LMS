@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Courses from './pages/Courses';
 import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import Categories from './pages/Categories';
 import Instructors from './pages/Instructors';
 import AboutUs from './pages/AboutUs';
@@ -35,6 +36,8 @@ function App() {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/student-dashboard" element={<StudentDashboard />} />
               <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+              <Route path="/admin-dashboard" element={<AdminDashboard />} />
+              <Route path="/admin" element={<AdminDashboard />} />
             </Routes>
           </Layout>
         </div>

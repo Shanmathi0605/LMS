@@ -240,7 +240,7 @@ const Home = () => {
                     <span>×</span> No 1-on-1 mentorship
                   </li>
                 </ul>
-                <Link to="/register" className="btn-primary w-full block text-center py-3">Get Started</Link>
+                <Link to="/courses" className="btn-primary w-full block text-center py-3">Get Started</Link>
               </div>
 
               {/* Pro Plan */}
@@ -260,7 +260,7 @@ const Home = () => {
                     <span className="text-green-500">✓</span> Real-world projects & reviews
                   </li>
                 </ul>
-                <Link to="/register" className="btn-primary w-full block text-center py-3">Get Pro</Link>
+                <Link to="/courses" className="btn-primary w-full block text-center py-3">Get Pro</Link>
               </div>
 
             </div>
