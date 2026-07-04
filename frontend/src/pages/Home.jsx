@@ -244,7 +244,7 @@ const Home = () => {
               </div>
 
               {/* Pro Plan */}
-              <div className="flex-1 card p-8 border-2 border-primary-500 relative transform md:-translate-y-4 shadow-xl">
+              <div className="flex-1 card p-8 border-2 border-primary-500 relative transform md:-translate-y-4 shadow-xl overflow-visible">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-primary-500 to-indigo-500 text-white px-4 py-1 rounded-full text-sm font-bold">Most Popular</div>
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Pro Plan</h3>
                 <p className="text-slate-500 dark:text-slate-400 mb-6">For serious learners</p>
