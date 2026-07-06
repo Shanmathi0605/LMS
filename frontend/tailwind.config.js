@@ -11,14 +11,14 @@ export default {
       },
       colors: {
         primary: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          500: '#8b5cf6',
-          600: '#7c3aed',
-          700: '#6d28d9',
+          50: '#fff1f2',
+          100: '#ffe4e6',
+          500: '#be123c',
+          600: '#9f1239',
+          700: '#881337',
         },
         secondary: {
-          500: '#f43f5e',
+          500: '#f59e0b',
         },
         dark: {
           bg: '#0f172a',

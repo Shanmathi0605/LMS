@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
+import { Link, useLocation } from 'react-router-dom';
 import CoursePreviewModal from '../components/CoursePreviewModal';
 
 const Courses = () => {
@@ -8,11 +9,63 @@ const Courses = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const location = useLocation();
+  const { user } = useContext(AuthContext);
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      if (!user) return;
+      try {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const token = userInfo?.token;
+        if (!token) return;
+        const { data } = await axios.get('http://localhost:5000/api/users/wishlist', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setWishlist(data.map(c => c._id || c));
+      } catch (err) {
+        console.error('Error fetching wishlist', err);
+      }
+    };
+    fetchWishlist();
+  }, [user]);
+
+  const toggleWishlist = async (e, courseId) => {
+    e.stopPropagation();
+    if (!user) {
+      alert('Please login to save courses to your wishlist.');
+      return;
+    }
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const token = userInfo?.token;
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      
+      const isSaved = wishlist.includes(courseId);
+      if (isSaved) {
+        await axios.delete(`http://localhost:5000/api/users/wishlist/${courseId}`, config);
+        setWishlist(wishlist.filter(id => id !== courseId));
+      } else {
+        await axios.post(`http://localhost:5000/api/users/wishlist/${courseId}`, {}, config);
+        setWishlist([...wishlist, courseId]);
+      }
+    } catch (err) {
+      console.error('Error toggling wishlist', err);
+    }
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
+      setLoading(true);
       try {
-        const { data } = await axios.get('http://localhost:5000/api/courses');
+        const queryParams = new URLSearchParams(location.search);
+        const category = queryParams.get('category');
+        const url = category 
+          ? `http://localhost:5000/api/courses?category=${encodeURIComponent(category)}` 
+          : 'http://localhost:5000/api/courses';
+        
+        const { data } = await axios.get(url);
         setCourses(data);
       } catch (error) {
         console.error('Error fetching courses', error);
@@ -21,15 +74,49 @@ const Courses = () => {
       }
     };
     fetchCourses();
-  }, []);
+  }, [location.search]);
 
   if (loading) return <div className="text-center mt-20">Loading courses...</div>;
 
+  const queryParams = new URLSearchParams(location.search);
+  const category = queryParams.get('category');
+
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Breadcrumbs */}
+      <nav className="flex text-sm text-gray-500 dark:text-gray-400 mb-6" aria-label="Breadcrumb">
+        <ol className="inline-flex items-center space-x-1 md:space-x-3">
+          <li className="inline-flex items-center">
+            <Link to="/" className="inline-flex items-center hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+              Home
+            </Link>
+          </li>
+          <li>
+            <div className="flex items-center">
+              <svg className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
+              {category ? (
+                <Link to="/categories" className="ml-1 hover:text-primary-600 dark:hover:text-primary-400 md:ml-2 transition-colors">Categories</Link>
+              ) : (
+                <span className="ml-1 text-gray-700 dark:text-gray-300 md:ml-2 font-medium">Courses</span>
+              )}
+            </div>
+          </li>
+          {category && (
+            <li aria-current="page">
+              <div className="flex items-center">
+                <svg className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
+                <span className="ml-1 text-gray-700 dark:text-gray-300 md:ml-2 font-medium">{category}</span>
+              </div>
+            </li>
+          )}
+        </ol>
+      </nav>
+
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">All Courses</h1>
-        <Link to="/" className="text-primary-600 hover:underline">Back to Home</Link>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+          {category ? `${category} Courses` : 'All Courses'}
+        </h1>
       </div>
       
       {courses.length === 0 ? (
@@ -61,8 +148,17 @@ const Courses = () => {
               <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
               <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">{course.description}</p>
               <div className="flex justify-between items-center">
-                <span className="text-primary-600 font-bold">${course.price}</span>
-                <span className="bg-primary-100 text-primary-800 text-xs px-2 py-1 rounded">{course.category}</span>
+                <span className="text-primary-600 font-bold">₹{course.price}</span>
+                <div className="flex items-center gap-3">
+                  <span className="bg-primary-100 text-primary-800 text-xs px-2 py-1 rounded">{course.category}</span>
+                  <button onClick={(e) => toggleWishlist(e, course._id)} className="text-gray-400 hover:text-red-500 transition-colors" title="Add to Wishlist">
+                    {wishlist.includes(course._id) ? (
+                      <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd"></path></svg>
+                    ) : (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           ))}

@@ -1,4 +1,4 @@
-# EduLearn LMS
+# SkillNova LMS
 
 A Full Stack Learning Management System built with the MERN stack (MongoDB, Express, React, Node.js).
 

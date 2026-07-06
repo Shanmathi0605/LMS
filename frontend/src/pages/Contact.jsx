@@ -27,7 +27,7 @@ const Contact = () => {
         <div className="space-y-8">
           <div className="card p-8 bg-primary-50 dark:bg-slate-800">
             <h3 className="text-xl font-bold mb-2">Email Us</h3>
-            <p className="text-slate-600 dark:text-slate-400">support@edulearn.com</p>
+            <p className="text-slate-600 dark:text-slate-400">support@skillnova.com</p>
           </div>
           <div className="card p-8 bg-indigo-50 dark:bg-slate-800">
             <h3 className="text-xl font-bold mb-2">Call Us</h3>

@@ -1,13 +1,13 @@
 const AboutUs = () => {
   return (
     <div className="container mx-auto px-4 py-16 max-w-4xl">
-      <h1 className="text-5xl font-bold text-slate-900 dark:text-white mb-8 text-center">About EduLearn</h1>
+      <h1 className="text-5xl font-bold text-slate-900 dark:text-white mb-8 text-center">About SkillNova</h1>
       
       <div className="card p-8 md:p-12 mb-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-100 dark:bg-primary-900/20 rounded-bl-full -z-10"></div>
         <h2 className="text-3xl font-bold text-primary-600 mb-6">Our Mission</h2>
         <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6">
-          At EduLearn, we believe that education should be accessible to everyone, everywhere. Our mission is to democratize learning by connecting passionate experts with eager students across the globe.
+          At SkillNova, we believe that education should be accessible to everyone, everywhere. Our mission is to democratize learning by connecting passionate experts with eager students across the globe.
         </p>
         <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
           Whether you want to learn programming, master design, or grow your business, we provide the tools, the community, and the platform to help you achieve your goals.

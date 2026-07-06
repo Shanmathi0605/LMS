@@ -18,7 +18,7 @@ export const getUsers = async (req, res) => {
 // @access  Private/Admin
 export const approveTeacher = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).select('+password');
 
     if (user) {
       if (user.role !== 'teacher') {

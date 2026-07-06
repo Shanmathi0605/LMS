@@ -6,7 +6,6 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('student');
   const [error, setError] = useState('');
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register({ name, email, password, role });
+      await register({ name, email, password, role: 'student' });
       navigate('/');
     } catch (err) {
       setError(err);
@@ -39,13 +38,7 @@ const Register = () => {
             <label className="block text-gray-700 dark:text-gray-300 mb-2">Password</label>
             <input type="password" className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} required minLength="6" />
           </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 dark:text-gray-300 mb-2">Role</label>
-            <select className="input-field" value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-            </select>
-          </div>
+
           <button type="submit" className="btn-primary w-full">Register</button>
         </form>
         <p className="mt-4 text-center text-gray-600 dark:text-gray-400">

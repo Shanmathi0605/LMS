@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+
 const Categories = () => {
+  const navigate = useNavigate();
+
   const categoriesList = [
     { name: 'Web Development', icon: '🌐', count: 120 },
     { name: 'Data Science', icon: '📊', count: 85 },
@@ -10,6 +14,10 @@ const Categories = () => {
     { name: 'Music', icon: '🎵', count: 20 },
   ];
 
+  const handleCategoryClick = (categoryName) => {
+    navigate(`/courses?category=${encodeURIComponent(categoryName)}`);
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Explore Categories</h1>
@@ -17,7 +25,11 @@ const Categories = () => {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {categoriesList.map((cat, index) => (
-          <div key={index} className="card p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:-translate-y-2 transition-transform duration-300 group">
+          <div 
+            key={index} 
+            onClick={() => handleCategoryClick(cat.name)}
+            className="card p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:-translate-y-2 transition-transform duration-300 group"
+          >
             <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">{cat.icon}</div>
             <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">{cat.name}</h3>
             <p className="text-slate-500">{cat.count} Courses</p>

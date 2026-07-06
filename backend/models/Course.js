@@ -36,6 +36,10 @@ const courseSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -50,6 +54,13 @@ courseSchema.pre('remove', async function (next) {
 // Reverse populate with virtuals
 courseSchema.virtual('lessons', {
   ref: 'Lesson',
+  localField: '_id',
+  foreignField: 'course',
+  justOne: false,
+});
+
+courseSchema.virtual('reviews', {
+  ref: 'Review',
   localField: '_id',
   foreignField: 'course',
   justOne: false,

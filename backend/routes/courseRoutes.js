@@ -5,7 +5,11 @@ import {
   createCourse,
   updateCourse,
   deleteCourse,
+  getCourseReviews,
+  addCourseReview,
 } from '../controllers/courseController.js';
+import { getCourseQuizzes } from '../controllers/quizController.js';
+import { getCourseQuestions, askQuestion } from '../controllers/forumController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -17,6 +21,17 @@ router.route('/')
 router.route('/:id')
   .get(getCourseById)
   .put(protect, authorize('teacher', 'admin'), updateCourse)
-  .delete(protect, authorize('teacher', 'admin'), deleteCourse);
+  .delete(protect, authorize('admin', 'instructor'), deleteCourse);
+
+router.route('/:courseId/quizzes')
+  .get(protect, getCourseQuizzes);
+
+router.route('/:courseId/forum')
+  .get(protect, getCourseQuestions)
+  .post(protect, askQuestion);
+
+router.route('/:id/reviews')
+  .get(getCourseReviews)
+  .post(protect, addCourseReview);
 
 export default router;

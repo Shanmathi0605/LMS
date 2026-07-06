@@ -18,33 +18,34 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const fetchAdminData = async () => {
+    setLoading(true);
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const token = userInfo?.token;
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      const [statsRes, usersRes] = await Promise.all([
+        axios.get('http://localhost:5000/api/admin/stats', config),
+        axios.get('http://localhost:5000/api/admin/users', config)
+      ]);
+
+      setStats(statsRes.data);
+      setUsers(usersRes.data);
+    } catch (error) {
+      console.error('Error fetching admin data', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!user || user.role !== 'admin') {
-      navigate('/login');
+      navigate('/login?admin=true');
       return;
     }
-
-    const fetchAdminData = async () => {
-      try {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        const token = userInfo?.token;
-        const config = {
-          headers: { Authorization: `Bearer ${token}` },
-        };
-
-        const [statsRes, usersRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/admin/stats', config),
-          axios.get('http://localhost:5000/api/admin/users', config)
-        ]);
-
-        setStats(statsRes.data);
-        setUsers(usersRes.data);
-      } catch (error) {
-        console.error('Error fetching admin data', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchAdminData();
   }, [user, navigate]);
@@ -108,7 +109,7 @@ const AdminDashboard = () => {
         <div className="mb-10 flex flex-col md:flex-row items-center justify-between">
           <div>
             <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-2">Admin Dashboard</h1>
-            <p className="text-slate-600 dark:text-slate-400">Welcome back, {user?.name}. Here is what's happening on EduLearn.</p>
+            <p className="text-slate-600 dark:text-slate-400">Welcome back, {user?.name}. Here is what's happening on SkillNova.</p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-4">
             <button 
@@ -117,9 +118,14 @@ const AdminDashboard = () => {
             >
               + Add New Course
             </button>
-            <span className="px-4 py-2 bg-primary-100 text-primary-700 font-bold rounded-lg dark:bg-primary-900/30 dark:text-primary-400 flex items-center">
-              Admin Access
-            </span>
+            <button 
+              onClick={fetchAdminData}
+              title="Refresh Dashboard Data"
+              className="px-4 py-2 bg-primary-100 hover:bg-primary-200 text-primary-700 font-bold rounded-lg dark:bg-primary-900/30 dark:hover:bg-primary-900/50 dark:text-primary-400 flex items-center transition-colors"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+              Refresh Data
+            </button>
           </div>
         </div>
 

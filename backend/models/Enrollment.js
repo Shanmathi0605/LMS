@@ -17,6 +17,22 @@ const enrollmentSchema = new mongoose.Schema(
       enum: ['active', 'completed'],
       default: 'active',
     },
+    completedLessons: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Lesson',
+      }
+    ],
+    progressPercentage: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100
+    },
+    lastWatchedLesson: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Lesson',
+    }
   },
   { timestamps: true }
 );

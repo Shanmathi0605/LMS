@@ -1,4 +1,5 @@
 import Course from '../models/Course.js';
+import Review from '../models/Review.js';
 
 // @desc    Get all courses
 // @route   GET /api/courses
@@ -108,6 +109,55 @@ export const deleteCourse = async (req, res, next) => {
     await course.remove();
 
     res.json({ message: 'Course removed' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get reviews for a course
+// @route   GET /api/courses/:id/reviews
+// @access  Public
+export const getCourseReviews = async (req, res, next) => {
+  try {
+    const reviews = await Review.find({ course: req.params.id }).populate('user', 'name');
+    res.json(reviews);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Add review to a course
+// @route   POST /api/courses/:id/reviews
+// @access  Private
+export const addCourseReview = async (req, res, next) => {
+  try {
+    const { rating, comment } = req.body;
+    const courseId = req.params.id;
+
+    const course = await Course.findById(courseId);
+    if (!course) {
+      res.status(404);
+      throw new Error('Course not found');
+    }
+
+    const alreadyReviewed = await Review.findOne({
+      course: courseId,
+      user: req.user._id,
+    });
+
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error('Course already reviewed');
+    }
+
+    const review = await Review.create({
+      rating: Number(rating),
+      comment,
+      course: courseId,
+      user: req.user._id,
+    });
+
+    res.status(201).json(review);
   } catch (error) {
     next(error);
   }

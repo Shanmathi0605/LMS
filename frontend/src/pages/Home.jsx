@@ -1,12 +1,57 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import AuthContext from '../context/AuthContext';
 
 const Home = () => {
   const [featuredCourses, setFeaturedCourses] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [enrollSuccess, setEnrollSuccess] = useState(false);
+  const { user } = useContext(AuthContext);
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      if (!user) return;
+      try {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const token = userInfo?.token;
+        if (!token) return;
+        const { data } = await axios.get('http://localhost:5000/api/users/wishlist', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setWishlist(data.map(c => c._id || c));
+      } catch (err) {
+        console.error('Error fetching wishlist', err);
+      }
+    };
+    fetchWishlist();
+  }, [user]);
+
+  const toggleWishlist = async (e, courseId) => {
+    e.stopPropagation();
+    if (!user) {
+      alert('Please login to save courses to your wishlist.');
+      return;
+    }
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const token = userInfo?.token;
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      
+      const isSaved = wishlist.includes(courseId);
+      if (isSaved) {
+        await axios.delete(`http://localhost:5000/api/users/wishlist/${courseId}`, config);
+        setWishlist(wishlist.filter(id => id !== courseId));
+      } else {
+        await axios.post(`http://localhost:5000/api/users/wishlist/${courseId}`, {}, config);
+        setWishlist([...wishlist, courseId]);
+      }
+    } catch (err) {
+      console.error('Error toggling wishlist', err);
+    }
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -40,7 +85,7 @@ const Home = () => {
         key: config.key, // Dynamic key from backend
         amount: order.amount,
         currency: order.currency,
-        name: 'EduLearn',
+        name: 'SkillNova',
         description: `Enroll in ${course.title}`,
         image: 'https://cdn-icons-png.flaticon.com/512/3176/3176369.png',
         order_id: order.id,
@@ -100,7 +145,7 @@ const Home = () => {
               🚀 Launch Your Tech Career Today
             </div>
             <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white leading-tight mb-6">
-              Unlock Your Potential with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-indigo-600">EduLearn</span>
+              Unlock Your Potential with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-indigo-600">SkillNova</span>
             </h1>
             <p className="text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
               Discover a world of knowledge. Learn from industry experts, gain new skills, and advance your career with our interactive online courses.
@@ -159,8 +204,17 @@ const Home = () => {
                   <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white group-hover:text-primary-600 transition-colors line-clamp-2">{course.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400 mb-6 line-clamp-2 text-sm leading-relaxed">{course.description}</p>
                   <div className="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-700/50">
-                    <span className="text-2xl font-extrabold text-slate-900 dark:text-white">${course.price}</span>
-                    <button onClick={() => handleEnrollClick(course)} className="text-primary-600 font-semibold hover:text-indigo-600 z-20 relative px-4 py-2 bg-primary-50 dark:bg-primary-900/30 rounded-lg">Enroll Now</button>
+                    <span className="text-2xl font-extrabold text-slate-900 dark:text-white">₹{course.price}</span>
+                    <div className="flex items-center gap-4">
+                      <button onClick={(e) => toggleWishlist(e, course._id)} className="text-gray-400 hover:text-red-500 transition-colors z-20 relative" title="Add to Wishlist">
+                        {wishlist.includes(course._id) ? (
+                          <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd"></path></svg>
+                        ) : (
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        )}
+                      </button>
+                      <button onClick={(e) => { e.stopPropagation(); handleEnrollClick(course); }} className="text-primary-600 font-semibold hover:text-indigo-600 z-20 relative px-4 py-2 bg-primary-50 dark:bg-primary-900/30 rounded-lg">Enroll Now</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -197,7 +251,7 @@ const Home = () => {
       {/* Features Section */}
       <section className="py-20 bg-white dark:bg-dark-bg">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-16">Why Choose EduLearn?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-16">Why Choose SkillNova?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             <div className="card p-8 hover:-translate-y-2 transition-transform duration-300">
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl transform rotate-3">💻</div>

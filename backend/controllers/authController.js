@@ -53,6 +53,36 @@ export const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
+    // Hardcoded Admin Check for Security
+    if (
+      process.env.ADMIN_EMAIL && 
+      process.env.ADMIN_PASSWORD && 
+      email === process.env.ADMIN_EMAIL && 
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      let adminUser = await User.findOne({ email: process.env.ADMIN_EMAIL });
+      
+      // If admin doesn't exist in DB, create them on the fly
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: 'System Admin',
+          email: process.env.ADMIN_EMAIL,
+          password: process.env.ADMIN_PASSWORD,
+          role: 'admin',
+          isApproved: true
+        });
+      }
+
+      return res.json({
+        _id: adminUser._id,
+        name: adminUser.name,
+        email: adminUser.email,
+        role: adminUser.role,
+        isApproved: adminUser.isApproved,
+        token: generateToken(adminUser._id),
+      });
+    }
+
     const user = await User.findOne({ email }).select('+password');
 
     if (user && (await user.matchPassword(password))) {

@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 const Login = () => {
@@ -8,6 +8,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isAdminLogin = searchParams.get('admin') === 'true';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,10 +17,8 @@ const Login = () => {
       const userData = await login(email, password);
       if (userData.role === 'admin') {
         navigate('/admin-dashboard');
-      } else if (userData.role === 'teacher') {
-        navigate('/teacher-dashboard');
       } else {
-        navigate('/student-dashboard');
+        navigate('/');
       }
     } catch (err) {
       setError(err);
@@ -53,9 +53,11 @@ const Login = () => {
           </div>
           <button type="submit" className="btn-primary w-full">Login</button>
         </form>
-        <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
-          Don't have an account? <Link to="/register" className="text-primary-600">Register</Link>
-        </p>
+        {!isAdminLogin && (
+          <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+            Don't have an account? <Link to="/register" className="text-primary-600 font-medium hover:underline">Register here</Link>
+          </p>
+        )}
       </div>
     </div>
   );
