@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillNova LMS - Project Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .bg-wine { background-color: #9f1239; }
+        .text-wine { color: #9f1239; }
+        .border-wine { border-color: #9f1239; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-rose-800 selection:text-white">
+
+    <!-- Header -->
+    <header class="bg-wine text-white py-16 shadow-lg relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <h1 class="text-5xl font-extrabold mb-4">SkillNova LMS</h1>
+            <p class="text-xl font-light max-w-2xl mx-auto opacity-90">A Comprehensive Learning Management System with Advanced E-Learning Features.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 max-w-5xl">
+        
+        <!-- Tech Stack -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold border-b-4 border-wine inline-block pb-2 mb-8 text-slate-900">Technology Stack</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/MERN-logo.png" alt="MongoDB" class="h-16 mx-auto mb-4 object-contain">
+                    <h3 class="font-bold">MongoDB</h3>
+                    <p class="text-sm text-slate-500">NoSQL Database</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" alt="Express & Node" class="h-16 mx-auto mb-4 object-contain">
+                    <h3 class="font-bold">Express + Node.js</h3>
+                    <p class="text-sm text-slate-500">Backend API</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" class="h-16 mx-auto mb-4 object-contain">
+                    <h3 class="font-bold">React.js + Vite</h3>
+                    <p class="text-sm text-slate-500">Frontend UI</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind" class="h-16 mx-auto mb-4 object-contain">
+                    <h3 class="font-bold">Tailwind CSS</h3>
+                    <p class="text-sm text-slate-500">Styling & Theming</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Features -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold border-b-4 border-wine inline-block pb-2 mb-8 text-slate-900">Core Features</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-wine">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-wine text-2xl font-bold">1</div>
+                        <h3 class="text-xl font-bold text-slate-900">Authentication & Roles</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">Secure JWT-based authentication. Features distinct dashboards and permissions for <strong>Students</strong>, <strong>Instructors</strong>, and <strong>Admins</strong>.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-wine">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-wine text-2xl font-bold">2</div>
+                        <h3 class="text-xl font-bold text-slate-900">Course & Video Management</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">Instructors can create courses, upload thumbnails via Cloudinary, and add categorized video lessons with detailed descriptions.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-wine">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-wine text-2xl font-bold">3</div>
+                        <h3 class="text-xl font-bold text-slate-900">Razorpay Payment Gateway</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">Integrated INR (₹) payments using Razorpay API for seamless course purchases with instant access validation.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-wine">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-wine text-2xl font-bold">4</div>
+                        <h3 class="text-xl font-bold text-slate-900">Progress & Certification</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">Tracks video completion percentage. Automatically generates a downloadable PDF Certificate when progress reaches 100%.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-wine">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-wine text-2xl font-bold">5</div>
+                        <h3 class="text-xl font-bold text-slate-900">Quizzes & Assignments</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">Domain-specific multiple-choice quizzes are available inside the course player, offering instant grading and success feedback.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-wine">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-wine text-2xl font-bold">6</div>
+                        <h3 class="text-xl font-bold text-slate-900">Live Q&A Forum</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">Interactive discussion forum within each course. Students can ask questions, reply to peers, upvote, and receive answers from Instructors.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Architecture Workflow -->
+        <section class="mb-16 bg-white p-10 rounded-3xl shadow-lg border border-slate-100">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6 text-center">System Workflow</h2>
+            
+            <div class="space-y-6">
+                <div class="flex items-start gap-4">
+                    <div class="mt-1 w-8 h-8 rounded-full bg-wine text-white flex items-center justify-center shrink-0">❖</div>
+                    <div>
+                        <h4 class="font-bold text-lg">1. Registration & Access</h4>
+                        <p class="text-slate-600">Users register. Instructors create courses in Draft mode, publish them, and they become visible on the public Storefront.</p>
+                    </div>
+                </div>
+                <div class="w-0.5 h-8 bg-slate-200 ml-4"></div>
+                <div class="flex items-start gap-4">
+                    <div class="mt-1 w-8 h-8 rounded-full bg-wine text-white flex items-center justify-center shrink-0">❖</div>
+                    <div>
+                        <h4 class="font-bold text-lg">2. Enrollment & Transaction</h4>
+                        <p class="text-slate-600">Student clicks "Access Course", completes the Razorpay transaction, and the Backend securely creates an `Enrollment` record linking the user to the course.</p>
+                    </div>
+                </div>
+                <div class="w-0.5 h-8 bg-slate-200 ml-4"></div>
+                <div class="flex items-start gap-4">
+                    <div class="mt-1 w-8 h-8 rounded-full bg-wine text-white flex items-center justify-center shrink-0">❖</div>
+                    <div>
+                        <h4 class="font-bold text-lg">3. Learning Experience</h4>
+                        <p class="text-slate-600">Student accesses the Course Preview Modal. They watch videos (marking as complete), take Quizzes for grading, and participate in the Q&A Forum.</p>
+                    </div>
+                </div>
+                <div class="w-0.5 h-8 bg-slate-200 ml-4"></div>
+                <div class="flex items-start gap-4">
+                    <div class="mt-1 w-8 h-8 rounded-full bg-wine text-white flex items-center justify-center shrink-0">❖</div>
+                    <div>
+                        <h4 class="font-bold text-lg">4. Achievement</h4>
+                        <p class="text-slate-600">Upon 100% video completion, the backend updates progress, allowing the user to generate and download their Completion Certificate from their Dashboard.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center">
+        <p>&copy; 2024 SkillNova LMS. Developed with ❤️.</p>
+    </footer>
+
+</body>
+</html>

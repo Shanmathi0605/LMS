@@ -3,12 +3,15 @@ import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
 import CoursePreviewModal from '../components/CoursePreviewModal';
+import LoginPromptModal from '../components/LoginPromptModal';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const [wishlist, setWishlist] = useState([]);
@@ -34,7 +37,7 @@ const Courses = () => {
   const toggleWishlist = async (e, courseId) => {
     e.stopPropagation();
     if (!user) {
-      alert('Please login to save courses to your wishlist.');
+      setShowLoginPrompt(true);
       return;
     }
     try {
@@ -55,28 +58,49 @@ const Courses = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      setLoading(true);
-      try {
-        const queryParams = new URLSearchParams(location.search);
-        const category = queryParams.get('category');
-        const url = category 
-          ? `http://localhost:5000/api/courses?category=${encodeURIComponent(category)}` 
-          : 'http://localhost:5000/api/courses';
-        
-        const { data } = await axios.get(url);
-        setCourses(data);
-      } catch (error) {
-        console.error('Error fetching courses', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCourses();
-  }, [location.search]);
+  const fetchCourses = async () => {
+    // setLoading(true); // removed to prevent UI jumping during search
+    try {
+      const queryParams = new URLSearchParams(location.search);
+      const category = queryParams.get('category');
+      
+      let url = 'http://localhost:5000/api/courses?';
+      if (category) url += `category=${encodeURIComponent(category)}&`;
+      if (searchQuery) url += `search=${encodeURIComponent(searchQuery)}&`;
+      
+      const { data } = await axios.get(url);
+      setCourses(data);
+    } catch (error) {
+      console.error('Error fetching courses', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (loading) return <div className="text-center mt-20">Loading courses...</div>;
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      fetchCourses();
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, location.search]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchCourses();
+  };
+
+  const highlightText = (text, highlight) => {
+    if (!highlight) return text;
+    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    return parts.map((part, i) => 
+      part.toLowerCase() === highlight.toLowerCase() ? 
+        <span key={i} className="bg-yellow-200 dark:bg-yellow-600/50 text-slate-900 dark:text-white rounded-sm">{part}</span> 
+        : part
+    );
+  };
+
+  // if (loading && courses.length === 0) return <div className="text-center mt-20">Loading courses...</div>;
 
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get('category');
@@ -113,14 +137,34 @@ const Courses = () => {
         </ol>
       </nav>
 
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
-          {category ? `${category} Courses` : 'All Courses'}
-        </h1>
+      {/* Header and Search */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+        <div>
+          <h1 className="text-4xl font-extrabold text-slate-800 dark:text-white">
+            {category ? `${category} Courses` : 'All Courses'}
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-2 text-lg">
+            {category ? `Explore top-rated courses in ${category}.` : 'Discover your next skill from our extensive catalog.'}
+          </p>
+        </div>
+        <form onSubmit={handleSearch} className="flex max-w-md w-full">
+          <input 
+            type="text" 
+            placeholder="Search courses..." 
+            className="input-field rounded-r-none border-r-0 focus:ring-0 flex-1"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit" className="bg-primary-600 hover:bg-primary-700 text-white px-6 font-bold rounded-r-xl shadow-md transition-colors">
+            Search
+          </button>
+        </form>
       </div>
       
       {courses.length === 0 ? (
-        <div className="text-center text-gray-500">No courses available right now.</div>
+        <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+          <p className="text-gray-500">No courses available right now.</p>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map(course => (
@@ -145,7 +189,7 @@ const Courses = () => {
                   <span className="text-gray-400">No Image</span>
                 )}
               </div>
-              <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
+              <h2 className="text-xl font-semibold mb-2">{highlightText(course.title, searchQuery)}</h2>
               <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">{course.description}</p>
               <div className="flex justify-between items-center">
                 <span className="text-primary-600 font-bold">₹{course.price}</span>
@@ -173,6 +217,12 @@ const Courses = () => {
           // Small delay before clearing selected course to allow exit animation if we add one
           setTimeout(() => setSelectedCourse(null), 300);
         }} 
+      />
+
+      <LoginPromptModal 
+        isOpen={showLoginPrompt} 
+        onClose={() => setShowLoginPrompt(false)} 
+        message="Please log in to add courses to your wishlist."
       />
     </div>
   );

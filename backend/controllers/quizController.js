@@ -8,13 +8,15 @@ export const getCourseQuizzes = async (req, res, next) => {
   try {
     const { courseId } = req.params;
     
-    // Check if user is enrolled
+    // Check if user is enrolled or is admin/teacher
+    const isPrivileged = req.user.role === 'admin' || req.user.role === 'teacher' || req.user.role === 'instructor';
+    
     const enrollment = await Enrollment.findOne({
       student: req.user._id,
       course: courseId
     });
 
-    if (!enrollment) {
+    if (!enrollment && !isPrivileged) {
       res.status(403);
       throw new Error('Not enrolled in this course');
     }

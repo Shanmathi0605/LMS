@@ -3,6 +3,7 @@ import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import User from '../models/User.js';
 import Enrollment from '../models/Enrollment.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -44,8 +45,8 @@ router.get('/check-enrollment', async (req, res) => {
 
 // @route   POST /api/payment/orders
 // @desc    Create a Razorpay order
-// @access  Public (Should be private in production)
-router.post('/orders', async (req, res) => {
+// @access  Private
+router.post('/orders', protect, async (req, res) => {
   try {
     const { amount, currency, receipt } = req.body;
     
@@ -72,8 +73,8 @@ router.post('/orders', async (req, res) => {
 
 // @route   POST /api/payment/verify
 // @desc    Verify Razorpay payment signature
-// @access  Public
-router.post('/verify', async (req, res) => {
+// @access  Private
+router.post('/verify', protect, async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature, email, courseId } = req.body;
     
@@ -95,15 +96,8 @@ router.post('/verify', async (req, res) => {
     }
 
     if (isVerified) {
-      // Find or create user
-      let user = await User.findOne({ email });
-      if (!user) {
-        user = await User.create({
-          name: email.split('@')[0], // Use part of email as name
-          email,
-          password: 'tempPassword123' // Dummy password
-        });
-      }
+      // User is already authenticated via protect middleware
+      const user = req.user;
 
       // Check if enrollment exists
       const existingEnrollment = await Enrollment.findOne({ student: user._id, course: courseId });

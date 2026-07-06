@@ -106,7 +106,7 @@ export const deleteCourse = async (req, res, next) => {
       throw new Error('Not authorized to delete this course');
     }
 
-    await course.remove();
+    await course.deleteOne();
 
     res.json({ message: 'Course removed' });
   } catch (error) {
