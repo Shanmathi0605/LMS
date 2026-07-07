@@ -18,6 +18,7 @@ import Notifications from './pages/Notifications';
 import Wishlist from './pages/Wishlist';
 import ApplyInstructor from './pages/ApplyInstructor';
 import ProfileSettings from './pages/ProfileSettings';
+import AIChatbot from './components/AIChatbot';
 
 function App() {
   return (
@@ -57,6 +58,9 @@ function App() {
               } />
             </Routes>
           </Layout>
+          
+          {/* Global AI Chatbot */}
+          <AIChatbot />
         </div>
       </Router>
     </AuthProvider>

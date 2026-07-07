@@ -11,6 +11,7 @@ import userRoutes from './routes/userRoutes.js';
 import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import quizRoutes from './routes/quizRoutes.js';
 import forumRoutes from './routes/forumRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 // Load env vars
@@ -37,6 +38,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/forum', forumRoutes);
+app.use('/api/chat', aiRoutes);
 
 app.get('/', (req, res) => {
   res.send('SkillNova LMS API is running...');
