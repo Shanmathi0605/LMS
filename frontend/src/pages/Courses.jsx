@@ -11,6 +11,7 @@ const Courses = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [loginPromptMessage, setLoginPromptMessage] = useState("Please log in to continue.");
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const { user } = useContext(AuthContext);
@@ -37,6 +38,7 @@ const Courses = () => {
   const toggleWishlist = async (e, courseId) => {
     e.stopPropagation();
     if (!user) {
+      setLoginPromptMessage("Please log in to add courses to your wishlist.");
       setShowLoginPrompt(true);
       return;
     }
@@ -172,8 +174,13 @@ const Courses = () => {
               key={course._id} 
               className="card p-4 hover:shadow-lg transition-shadow cursor-pointer transform hover:-translate-y-1"
               onClick={() => {
-                setSelectedCourse(course);
-                setIsModalOpen(true);
+                if (!user) {
+                  setLoginPromptMessage("Please log in to view course details.");
+                  setShowLoginPrompt(true);
+                } else {
+                  setSelectedCourse(course);
+                  setIsModalOpen(true);
+                }
               }}
             >
               <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden group">
@@ -222,7 +229,7 @@ const Courses = () => {
       <LoginPromptModal 
         isOpen={showLoginPrompt} 
         onClose={() => setShowLoginPrompt(false)} 
-        message="Please log in to add courses to your wishlist."
+        message={loginPromptMessage}
       />
     </div>
   );

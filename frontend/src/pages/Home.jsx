@@ -2,12 +2,15 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
+import LoginPromptModal from '../components/LoginPromptModal';
 
 const Home = () => {
   const [featuredCourses, setFeaturedCourses] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [enrollSuccess, setEnrollSuccess] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [loginPromptMessage, setLoginPromptMessage] = useState("Please log in to continue.");
   const { user } = useContext(AuthContext);
   const [wishlist, setWishlist] = useState([]);
 
@@ -32,7 +35,8 @@ const Home = () => {
   const toggleWishlist = async (e, courseId) => {
     e.stopPropagation();
     if (!user) {
-      alert('Please login to save courses to your wishlist.');
+      setLoginPromptMessage("Please log in to save courses to your wishlist.");
+      setShowLoginPrompt(true);
       return;
     }
     try {
@@ -66,6 +70,11 @@ const Home = () => {
   }, []);
 
   const handleEnrollClick = async (course) => {
+    if (!user) {
+      setLoginPromptMessage("Please log in to enroll in a course.");
+      setShowLoginPrompt(true);
+      return;
+    }
     try {
       const token = localStorage.getItem('token');
       // If no token, maybe redirect to login or show alert (skipping for brevity)
@@ -324,6 +333,12 @@ const Home = () => {
           </div>
         </div>
       )}
+
+      <LoginPromptModal 
+        isOpen={showLoginPrompt} 
+        onClose={() => setShowLoginPrompt(false)} 
+        message={loginPromptMessage}
+      />
     </div>
   );
 };
