@@ -86,7 +86,7 @@ const Wishlist = () => {
               <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2 text-sm">{course.description}</p>
               
               <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                <span className="text-primary-600 font-bold">₹{course.price}</span>
+                <span className="text-primary-600 font-bold">₹{Math.round(course.price)}</span>
                 <button 
                   onClick={() => removeFromWishlist(course._id)}
                   className="text-red-500 hover:text-red-700 font-medium text-sm flex items-center gap-1"

@@ -249,7 +249,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
 
       // 1. Create order on the backend
       const orderRes = await axios.post('https://lms-dg3c.onrender.com/api/payment/orders', {
-        amount: course.price,
+        amount: Math.round(course.price),
         currency: 'INR',
       }, config);
 
@@ -383,7 +383,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
                       {loadingPayment ? (
                         <span className="animate-pulse">Processing...</span>
                       ) : (
-                        <>Access Course (₹{course.price})</>
+                        <>Access Course (₹{Math.round(course.price)})</>
                       )}
                     </button>
                   </div>

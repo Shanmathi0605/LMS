@@ -73,7 +73,7 @@ const TeacherDashboard = () => {
                 <tr key={course._id} className="border-t border-gray-100 dark:border-gray-700">
                   <td className="p-4 font-medium">{course.title}</td>
                   <td className="p-4">{course.category}</td>
-                  <td className="p-4">₹{course.price}</td>
+                  <td className="p-4">₹{Math.round(course.price)}</td>
                   <td className="p-4">
                     <span className={`px-2 py-1 text-xs rounded ${course.isPublished ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
                       {course.isPublished ? 'Published' : 'Draft'}

@@ -20,7 +20,7 @@ const StudentDashboard = () => {
       try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
-        const { data } = await axios.get('https://lms-dg3c.onrender.com/api/enrollments', {
+        const { data } = await axios.get('https://lms-dg3c.onrender.com/api/enrollments/my-enrollments', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setEnrollments(data);

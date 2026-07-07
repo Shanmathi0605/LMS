@@ -84,7 +84,7 @@ const Home = () => {
       
       // 1. Create order on backend
       const { data: order } = await axios.post('https://lms-dg3c.onrender.com/api/payment/orders', {
-        amount: course.price,
+        amount: Math.round(course.price),
         currency: 'USD',
         receipt: `receipt_${course._id}`
       });
@@ -213,7 +213,7 @@ const Home = () => {
                   <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white group-hover:text-primary-600 transition-colors line-clamp-2">{course.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400 mb-6 line-clamp-2 text-sm leading-relaxed">{course.description}</p>
                   <div className="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-700/50">
-                    <span className="text-2xl font-extrabold text-slate-900 dark:text-white">₹{course.price}</span>
+                    <span className="text-2xl font-extrabold text-slate-900 dark:text-white">₹{Math.round(course.price)}</span>
                     <div className="flex items-center gap-4">
                       <button onClick={(e) => toggleWishlist(e, course._id)} className="text-gray-400 hover:text-red-500 transition-colors z-20 relative" title="Add to Wishlist">
                         {wishlist.includes(course._id) ? (

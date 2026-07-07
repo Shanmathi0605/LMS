@@ -139,8 +139,38 @@ const Courses = () => {
         </ol>
       </nav>
 
-      {/* Header and Search */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Sidebar Filter */}
+        <div className="w-full md:w-64 flex-shrink-0">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 sticky top-24">
+            <h3 className="text-xl font-extrabold text-slate-800 dark:text-white mb-6">Categories</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link 
+                  to="/courses" 
+                  className={`block px-4 py-2 rounded-lg transition-colors ${!category ? 'bg-primary-50 text-primary-700 font-bold dark:bg-primary-900/30 dark:text-primary-400' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-700'}`}
+                >
+                  All Categories
+                </Link>
+              </li>
+              {['Web Development', 'Data Science', 'Mobile Design', 'Marketing', 'Photography', 'UI/UX Design', 'Business', 'Music'].map(cat => (
+                <li key={cat}>
+                  <Link 
+                    to={`/courses?category=${encodeURIComponent(cat)}`} 
+                    className={`block px-4 py-2 rounded-lg transition-colors ${category === cat ? 'bg-primary-50 text-primary-700 font-bold dark:bg-primary-900/30 dark:text-primary-400' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-700'}`}
+                  >
+                    {cat}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex-1">
+          {/* Header and Search */}
+          <div className="flex flex-col xl:flex-row xl:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-4xl font-extrabold text-slate-800 dark:text-white">
             {category ? `${category} Courses` : 'All Courses'}
@@ -199,7 +229,7 @@ const Courses = () => {
               <h2 className="text-xl font-semibold mb-2">{highlightText(course.title, searchQuery)}</h2>
               <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">{course.description}</p>
               <div className="flex justify-between items-center">
-                <span className="text-primary-600 font-bold">₹{course.price}</span>
+                <span className="text-primary-600 font-bold">₹{Math.round(course.price)}</span>
                 <div className="flex items-center gap-3">
                   <span className="bg-primary-100 text-primary-800 text-xs px-2 py-1 rounded">{course.category}</span>
                   <button onClick={(e) => toggleWishlist(e, course._id)} className="text-gray-400 hover:text-red-500 transition-colors" title="Add to Wishlist">
@@ -215,6 +245,8 @@ const Courses = () => {
           ))}
         </div>
       )}
+        </div>
+      </div>
 
       <CoursePreviewModal 
         course={selectedCourse} 
