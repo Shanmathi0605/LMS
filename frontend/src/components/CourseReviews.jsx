@@ -17,7 +17,7 @@ const CourseReviews = ({ courseId }) => {
 
   const fetchReviews = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/courses/${courseId}/reviews`);
+      const { data } = await axios.get(`https://lms-dg3c.onrender.com/api/courses/${courseId}/reviews`);
       setReviews(data);
     } catch (err) {
       console.error('Error fetching reviews', err);
@@ -39,7 +39,7 @@ const CourseReviews = ({ courseId }) => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       
       await axios.post(
-        `http://localhost:5000/api/courses/${courseId}/reviews`,
+        `https://lms-dg3c.onrender.com/api/courses/${courseId}/reviews`,
         { rating, comment },
         config
       );

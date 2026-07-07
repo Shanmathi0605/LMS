@@ -56,7 +56,7 @@ const ProfileSettings = () => {
         }
       };
 
-      const { data } = await axios.put('http://localhost:5000/api/auth/profile', {
+      const { data } = await axios.put('https://lms-dg3c.onrender.com/api/auth/profile', {
         name,
         profilePic,
         avatarUrl,
