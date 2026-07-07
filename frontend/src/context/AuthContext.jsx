@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const { data } = await axios.post('https://lms-dg3c.onrender.com/api/auth/login', { email, password });
+      const { data } = await axios.post('http://localhost:5000/api/auth/login', { email, password });
       setUser(data);
       localStorage.setItem('userInfo', JSON.stringify(data));
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const { data } = await axios.post('https://lms-dg3c.onrender.com/api/auth/register', userData);
+      const { data } = await axios.post('http://localhost:5000/api/auth/register', userData);
       setUser(data);
       localStorage.setItem('userInfo', JSON.stringify(data));
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
@@ -58,8 +58,14 @@ export const AuthProvider = ({ children }) => {
     delete axios.defaults.headers.common['Authorization'];
   };
 
+  const updateUser = (userData) => {
+    setUser(userData);
+    localStorage.setItem('userInfo', JSON.stringify(userData));
+    axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser }}>
       {!loading && children}
     </AuthContext.Provider>
   );

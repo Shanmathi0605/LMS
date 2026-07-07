@@ -35,7 +35,7 @@ const CreateCourseModal = ({ isOpen, onClose, onCourseCreated }) => {
       };
 
       const { data } = await axios.post(
-        'https://lms-dg3c.onrender.com/api/courses',
+        'http://localhost:5000/api/courses',
         { ...formData, isPublished: true },
         config
       );

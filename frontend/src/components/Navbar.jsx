@@ -107,12 +107,16 @@ const Navbar = () => {
                 {user.role === 'admin' ? 'Admin Dashboard' : user.role === 'instructor' || user.role === 'teacher' ? 'Instructor Dashboard' : 'My Learning'}
               </Link>
 
-              <div className="flex items-center gap-2 cursor-pointer group">
-                <div className="w-9 h-9 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold">
-                  {user.name.charAt(0).toUpperCase()}
+              <Link to="/settings" className="flex items-center gap-2 cursor-pointer group ml-2">
+                <div className="w-9 h-9 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold overflow-hidden border border-primary-200">
+                  {user.profilePic ? (
+                    <img src={user.profilePic} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    user.name.charAt(0).toUpperCase()
+                  )}
                 </div>
-                <span className="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-primary-600 transition-colors">{user.name}</span>
-              </div>
+                <span className="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-primary-600 transition-colors hidden sm:block">{user.name}</span>
+              </Link>
               <button onClick={handleLogout} className="px-4 py-2 text-sm text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors ml-2">Logout</button>
             </div>
           ) : (

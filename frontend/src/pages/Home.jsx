@@ -21,7 +21,7 @@ const Home = () => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
         if (!token) return;
-        const { data } = await axios.get('https://lms-dg3c.onrender.com/api/users/wishlist', {
+        const { data } = await axios.get('http://localhost:5000/api/users/wishlist', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setWishlist(data.map(c => c._id || c));
@@ -46,10 +46,10 @@ const Home = () => {
       
       const isSaved = wishlist.includes(courseId);
       if (isSaved) {
-        await axios.delete(`https://lms-dg3c.onrender.com/api/users/wishlist/${courseId}`, config);
+        await axios.delete(`http://localhost:5000/api/users/wishlist/${courseId}`, config);
         setWishlist(wishlist.filter(id => id !== courseId));
       } else {
-        await axios.post(`https://lms-dg3c.onrender.com/api/users/wishlist/${courseId}`, {}, config);
+        await axios.post(`http://localhost:5000/api/users/wishlist/${courseId}`, {}, config);
         setWishlist([...wishlist, courseId]);
       }
     } catch (err) {
@@ -60,7 +60,7 @@ const Home = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const { data } = await axios.get('https://lms-dg3c.onrender.com/api/courses');
+        const { data } = await axios.get('http://localhost:5000/api/courses');
         setFeaturedCourses(data.slice(0, 3)); // Get first 3 courses
       } catch (error) {
         console.error('Error fetching courses', error);
@@ -80,10 +80,10 @@ const Home = () => {
       // If no token, maybe redirect to login or show alert (skipping for brevity)
       
       // Fetch Razorpay key
-      const { data: config } = await axios.get('https://lms-dg3c.onrender.com/api/payment/config');
+      const { data: config } = await axios.get('http://localhost:5000/api/payment/config');
       
       // 1. Create order on backend
-      const { data: order } = await axios.post('https://lms-dg3c.onrender.com/api/payment/orders', {
+      const { data: order } = await axios.post('http://localhost:5000/api/payment/orders', {
         amount: Math.round(course.price),
         currency: 'USD',
         receipt: `receipt_${course._id}`
@@ -101,7 +101,7 @@ const Home = () => {
         handler: async function (response) {
           try {
             // 3. Verify Payment
-            const verifyRes = await axios.post('https://lms-dg3c.onrender.com/api/payment/verify', {
+            const verifyRes = await axios.post('http://localhost:5000/api/payment/verify', {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature

@@ -35,6 +35,8 @@ export const registerUser = async (req, res, next) => {
         email: user.email,
         role: user.role,
         isApproved: user.isApproved,
+        profilePic: user.profilePic,
+        avatarUrl: user.avatarUrl,
         token: generateToken(user._id),
       });
     } else {
@@ -79,6 +81,8 @@ export const loginUser = async (req, res, next) => {
         email: adminUser.email,
         role: adminUser.role,
         isApproved: adminUser.isApproved,
+        profilePic: adminUser.profilePic,
+        avatarUrl: adminUser.avatarUrl,
         token: generateToken(adminUser._id),
       });
     }
@@ -92,6 +96,8 @@ export const loginUser = async (req, res, next) => {
         email: user.email,
         role: user.role,
         isApproved: user.isApproved,
+        profilePic: user.profilePic,
+        avatarUrl: user.avatarUrl,
         token: generateToken(user._id),
       });
     } else {
@@ -110,6 +116,49 @@ export const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
     res.json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+export const updateProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).select('+password');
+
+    if (user) {
+      user.name = req.body.name || user.name;
+      
+      if (req.body.profilePic !== undefined) {
+        user.profilePic = req.body.profilePic;
+      }
+      
+      if (req.body.avatarUrl !== undefined) {
+        user.avatarUrl = req.body.avatarUrl;
+      }
+      
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        isApproved: updatedUser.isApproved,
+        profilePic: updatedUser.profilePic,
+        avatarUrl: updatedUser.avatarUrl,
+        token: generateToken(updatedUser._id),
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
   } catch (error) {
     next(error);
   }

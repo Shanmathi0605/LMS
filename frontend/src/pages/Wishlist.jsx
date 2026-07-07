@@ -18,7 +18,7 @@ const Wishlist = () => {
           return;
         }
         
-        const { data } = await axios.get('https://lms-dg3c.onrender.com/api/users/wishlist', {
+        const { data } = await axios.get('http://localhost:5000/api/users/wishlist', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setWishlistCourses(data);
@@ -42,7 +42,7 @@ const Wishlist = () => {
       const token = userInfo?.token;
       const config = { headers: { Authorization: `Bearer ${token}` } };
       
-      await axios.delete(`https://lms-dg3c.onrender.com/api/users/wishlist/${courseId}`, config);
+      await axios.delete(`http://localhost:5000/api/users/wishlist/${courseId}`, config);
       setWishlistCourses(wishlistCourses.filter(c => c._id !== courseId));
     } catch (err) {
       console.error('Error removing from wishlist', err);

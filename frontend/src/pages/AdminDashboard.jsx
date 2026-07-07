@@ -28,8 +28,8 @@ const AdminDashboard = () => {
       };
 
       const [statsRes, usersRes] = await Promise.all([
-        axios.get('https://lms-dg3c.onrender.com/api/admin/stats', config),
-        axios.get('https://lms-dg3c.onrender.com/api/admin/users', config)
+        axios.get('http://localhost:5000/api/admin/stats', config),
+        axios.get('http://localhost:5000/api/admin/users', config)
       ]);
 
       setStats(statsRes.data);
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
       const token = userInfo?.token;
       const config = { headers: { Authorization: `Bearer ${token}` } };
       
-      const { data } = await axios.put(`https://lms-dg3c.onrender.com/api/admin/users/${userId}/approve`, {}, config);
+      const { data } = await axios.put(`http://localhost:5000/api/admin/users/${userId}/approve`, {}, config);
       
       setUsers(users.map(u => u._id === userId ? { ...u, isApproved: true } : u));
       setStats(prev => ({ ...prev, pendingTeachers: prev.pendingTeachers > 0 ? prev.pendingTeachers - 1 : 0 }));
@@ -75,7 +75,7 @@ const AdminDashboard = () => {
       const token = userInfo?.token;
       const config = { headers: { Authorization: `Bearer ${token}` } };
       
-      await axios.delete(`https://lms-dg3c.onrender.com/api/admin/users/${userId}`, config);
+      await axios.delete(`http://localhost:5000/api/admin/users/${userId}`, config);
       
       setUsers(users.filter(u => u._id !== userId));
       alert('User deleted successfully');

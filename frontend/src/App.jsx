@@ -17,6 +17,7 @@ import Privacy from './pages/Privacy';
 import Notifications from './pages/Notifications';
 import Wishlist from './pages/Wishlist';
 import ApplyInstructor from './pages/ApplyInstructor';
+import ProfileSettings from './pages/ProfileSettings';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/dashboard" element={<StudentDashboard />} />
+              <Route path="/settings" element={<ProfileSettings />} />
 
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
               <Route path="/admin" element={<AdminDashboard />} />

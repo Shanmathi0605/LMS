@@ -24,7 +24,7 @@ const Courses = () => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
         if (!token) return;
-        const { data } = await axios.get('https://lms-dg3c.onrender.com/api/users/wishlist', {
+        const { data } = await axios.get('http://localhost:5000/api/users/wishlist', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setWishlist(data.map(c => c._id || c));
@@ -49,10 +49,10 @@ const Courses = () => {
       
       const isSaved = wishlist.includes(courseId);
       if (isSaved) {
-        await axios.delete(`https://lms-dg3c.onrender.com/api/users/wishlist/${courseId}`, config);
+        await axios.delete(`http://localhost:5000/api/users/wishlist/${courseId}`, config);
         setWishlist(wishlist.filter(id => id !== courseId));
       } else {
-        await axios.post(`https://lms-dg3c.onrender.com/api/users/wishlist/${courseId}`, {}, config);
+        await axios.post(`http://localhost:5000/api/users/wishlist/${courseId}`, {}, config);
         setWishlist([...wishlist, courseId]);
       }
     } catch (err) {
@@ -61,12 +61,12 @@ const Courses = () => {
   };
 
   const fetchCourses = async () => {
-    // setLoading(true); // removed to prevent UI jumping during search
+    setLoading(true);
     try {
       const queryParams = new URLSearchParams(location.search);
       const category = queryParams.get('category');
       
-      let url = 'https://lms-dg3c.onrender.com/api/courses?';
+      let url = 'http://localhost:5000/api/courses?';
       if (category) url += `category=${encodeURIComponent(category)}&`;
       if (searchQuery) url += `search=${encodeURIComponent(searchQuery)}&`;
       
@@ -101,8 +101,6 @@ const Courses = () => {
         : part
     );
   };
-
-  // if (loading && courses.length === 0) return <div className="text-center mt-20">Loading courses...</div>;
 
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get('category');
@@ -193,7 +191,11 @@ const Courses = () => {
         </form>
       </div>
       
-      {courses.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary-600"></div>
+        </div>
+      ) : courses.length === 0 ? (
         <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
           <p className="text-gray-500">No courses available right now.</p>
         </div>
