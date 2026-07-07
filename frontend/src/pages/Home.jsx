@@ -153,10 +153,10 @@ const Home = () => {
             <div className="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 font-semibold rounded-full mb-6">
               🚀 Launch Your Tech Career Today
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white leading-tight mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-slate-900 dark:text-white leading-tight mb-6">
               Unlock Your Potential with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-indigo-600">SkillNova</span>
             </h1>
-            <p className="text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
               Discover a world of knowledge. Learn from industry experts, gain new skills, and advance your career with our interactive online courses.
             </p>
             <div className="flex flex-wrap gap-4">

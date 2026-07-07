@@ -18,6 +18,7 @@ import Notifications from './pages/Notifications';
 import Wishlist from './pages/Wishlist';
 import ApplyInstructor from './pages/ApplyInstructor';
 import ProfileSettings from './pages/ProfileSettings';
+import CoursePlayer from './pages/CoursePlayer';
 import AIChatbot from './components/AIChatbot';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/apply-instructor" element={<ApplyInstructor />} />
+              <Route path="/course-player" element={<CoursePlayer />} />
 
               {/* Catch-all 404 route */}
               <Route path="*" element={

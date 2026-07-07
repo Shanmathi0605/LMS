@@ -88,12 +88,8 @@ const StudentDashboard = () => {
               </div>
               
               <Link 
-                to={`/courses?category=${encodeURIComponent(enrollment.course?.title)}`}
+                to={`/course-player?course=${encodeURIComponent(enrollment.course?.title || 'Unknown Course')}`}
                 className="w-full block text-center py-2 bg-slate-100 hover:bg-primary-50 text-primary-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary-900/30 rounded-lg font-semibold transition-colors mb-3"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert("This would normally open the course player module. For now, preview the course to see the video player.");
-                }}
               >
                 {enrollment.progressPercentage === 0 ? 'Start Course' : enrollment.progressPercentage === 100 ? 'Review Course' : 'Continue Learning'}
               </Link>

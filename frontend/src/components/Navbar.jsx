@@ -6,7 +6,23 @@ const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return document.documentElement.classList.contains('dark') || localStorage.getItem('theme') === 'dark';
+  });
   const notifRef = useRef(null);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
   const handleLogout = () => {
     logout();
@@ -35,12 +51,39 @@ const Navbar = () => {
   return (
     <nav className="glass-nav sticky top-0 z-50">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link to={user?.role === 'admin' ? '/admin-dashboard' : '/'} className="text-2xl font-bold text-primary-600 flex items-center gap-2">
+        <Link to={user?.role === 'admin' ? '/admin-dashboard' : '/'} className="text-2xl font-bold text-primary-600 flex items-center gap-2 z-50">
           <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" /></svg>
           SkillNova
         </Link>
 
-        <div className="hidden md:flex space-x-6 items-center">
+        {/* Mobile controls (Toggle + Hamburger) */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <button 
+            onClick={toggleDarkMode} 
+            className="p-2 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors z-50"
+            title="Toggle Dark Mode"
+          >
+            {isDarkMode ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+            )}
+          </button>
+
+          {/* Mobile menu button */}
+          <button 
+            className="p-2 text-slate-600 dark:text-slate-300 hover:text-primary-600 transition-colors z-50"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            ) : (
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            )}
+          </button>
+        </div>
+
+        <div className="hidden lg:flex space-x-6 items-center">
           {(!user || user.role !== 'admin') && (
             <>
               <Link to="/" className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium transition-colors">Home</Link>
@@ -125,8 +168,78 @@ const Navbar = () => {
               <Link to="/register" className="btn-primary">Sign Up Free</Link>
             </div>
           )}
+
+          {/* Desktop Dark Mode Toggle */}
+          <button 
+            onClick={toggleDarkMode} 
+            className="p-2 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-yellow-400 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors z-50 ml-4 border border-slate-200 dark:border-slate-600"
+            title="Toggle Dark Mode"
+          >
+            {isDarkMode ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+            )}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700 shadow-2xl absolute w-full left-0 top-20 py-4 px-6 flex flex-col gap-4 animate-slideDown">
+          {(!user || user.role !== 'admin') && (
+            <>
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium py-2">Home</Link>
+              <Link to="/courses" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium py-2">All Courses</Link>
+              <Link to="/categories" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium py-2">Categories</Link>
+              <Link to="/instructors" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium py-2">Instructors</Link>
+              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium py-2">About Us</Link>
+            </>
+          )}
+          
+          {user ? (
+            <div className="flex flex-col gap-3 pt-4 border-t border-slate-100 dark:border-slate-700">
+               <div className="flex items-center gap-4 mb-2">
+                <Link to="/settings" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold overflow-hidden border-2 border-primary-200">
+                    {user.profilePic ? <img src={user.profilePic} className="w-full h-full object-cover" /> : user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-slate-800 dark:text-white text-lg">{user.name}</span>
+                    <span className="text-xs text-slate-500 capitalize">{user.role}</span>
+                  </div>
+                </Link>
+              </div>
+              
+              <Link to={user.role === 'admin' ? '/admin-dashboard' : '/dashboard'} onClick={() => setIsMobileMenuOpen(false)} className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium py-2">
+                {user.role === 'admin' ? 'Admin Dashboard' : user.role === 'instructor' || user.role === 'teacher' ? 'Instructor Dashboard' : 'My Learning'}
+              </Link>
+              
+              {user.role !== 'admin' && (
+                <>
+                  <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium py-2 flex justify-between">
+                    Wishlist
+                    <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                  </Link>
+                  <Link to="/notifications" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-600 dark:text-slate-300 hover:text-primary-600 font-medium py-2 flex justify-between">
+                    Notifications
+                    {unreadCount > 0 && (
+                      <span className="px-2 py-0.5 text-xs font-bold text-white bg-red-600 rounded-full">{unreadCount}</span>
+                    )}
+                  </Link>
+                </>
+              )}
+              
+              <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="text-left text-red-600 font-bold py-2 mt-2">Logout</button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3 pt-4 border-t border-slate-100 dark:border-slate-700">
+              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-center px-4 py-3 text-primary-600 font-bold border-2 border-primary-600 rounded-xl">Login</Link>
+              <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} className="text-center px-4 py-3 bg-primary-600 text-white font-bold rounded-xl shadow-lg shadow-primary-500/30">Sign Up Free</Link>
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   );
 };
