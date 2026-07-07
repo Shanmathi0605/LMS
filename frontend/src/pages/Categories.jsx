@@ -4,14 +4,14 @@ const Categories = () => {
   const navigate = useNavigate();
 
   const categoriesList = [
-    { name: 'Web Development', icon: '🌐', count: 120 },
-    { name: 'Data Science', icon: '📊', count: 85 },
-    { name: 'Mobile Design', icon: '📱', count: 45 },
-    { name: 'Marketing', icon: '📈', count: 60 },
-    { name: 'Photography', icon: '📸', count: 30 },
-    { name: 'UI/UX Design', icon: '🎨', count: 75 },
-    { name: 'Business', icon: '💼', count: 110 },
-    { name: 'Music', icon: '🎵', count: 20 },
+    { name: 'Web Development', icon: '🌐', count: 10 },
+    { name: 'Data Science', icon: '📊', count: 10 },
+    { name: 'Mobile Design', icon: '📱', count: 10 },
+    { name: 'Marketing', icon: '📈', count: 10 },
+    { name: 'Photography', icon: '📸', count: 10 },
+    { name: 'UI/UX Design', icon: '🎨', count: 10 },
+    { name: 'Business', icon: '💼', count: 10 },
+    { name: 'Music', icon: '🎵', count: 10 },
   ];
 
   const handleCategoryClick = (categoryName) => {

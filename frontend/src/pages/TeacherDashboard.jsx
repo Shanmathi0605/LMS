@@ -12,7 +12,7 @@ const TeacherDashboard = () => {
     const fetchMyCourses = async () => {
       try {
         // Fetch courses where instructor is the current user
-        const { data } = await axios.get('http://localhost:5000/api/courses');
+        const { data } = await axios.get('https://lms-dg3c.onrender.com/api/courses');
         const filtered = data.filter(c => c.instructor?._id === user?._id || c.instructor === user?._id);
         setMyCourses(filtered);
       } catch (error) {

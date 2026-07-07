@@ -24,7 +24,7 @@ const Courses = () => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const token = userInfo?.token;
         if (!token) return;
-        const { data } = await axios.get('http://localhost:5000/api/users/wishlist', {
+        const { data } = await axios.get('https://lms-dg3c.onrender.com/api/users/wishlist', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setWishlist(data.map(c => c._id || c));
@@ -49,10 +49,10 @@ const Courses = () => {
       
       const isSaved = wishlist.includes(courseId);
       if (isSaved) {
-        await axios.delete(`http://localhost:5000/api/users/wishlist/${courseId}`, config);
+        await axios.delete(`https://lms-dg3c.onrender.com/api/users/wishlist/${courseId}`, config);
         setWishlist(wishlist.filter(id => id !== courseId));
       } else {
-        await axios.post(`http://localhost:5000/api/users/wishlist/${courseId}`, {}, config);
+        await axios.post(`https://lms-dg3c.onrender.com/api/users/wishlist/${courseId}`, {}, config);
         setWishlist([...wishlist, courseId]);
       }
     } catch (err) {
@@ -66,7 +66,7 @@ const Courses = () => {
       const queryParams = new URLSearchParams(location.search);
       const category = queryParams.get('category');
       
-      let url = 'http://localhost:5000/api/courses?';
+      let url = 'https://lms-dg3c.onrender.com/api/courses?';
       if (category) url += `category=${encodeURIComponent(category)}&`;
       if (searchQuery) url += `search=${encodeURIComponent(searchQuery)}&`;
       

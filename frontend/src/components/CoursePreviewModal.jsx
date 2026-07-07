@@ -37,7 +37,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
         const token = userInfo?.token;
         if (!token) return;
 
-        const { data } = await axios.get(`http://localhost:5000/api/enrollments/check/${course._id}`, {
+        const { data } = await axios.get(`https://lms-dg3c.onrender.com/api/enrollments/check/${course._id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -64,7 +64,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
       const token = userInfo?.token;
       if (!token) return;
       
-      const { data } = await axios.get(`http://localhost:5000/api/courses/${course._id}/quizzes`, {
+      const { data } = await axios.get(`https://lms-dg3c.onrender.com/api/courses/${course._id}/quizzes`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setQuizzes(data);
@@ -79,7 +79,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
       const token = userInfo?.token;
       if (!token) return;
       
-      const { data } = await axios.get(`http://localhost:5000/api/courses/${course._id}/forum`, {
+      const { data } = await axios.get(`https://lms-dg3c.onrender.com/api/courses/${course._id}/forum`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setQuestions(data);
@@ -98,7 +98,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const token = userInfo?.token;
       
-      await axios.post(`http://localhost:5000/api/courses/${course._id}/forum`, {
+      await axios.post(`https://lms-dg3c.onrender.com/api/courses/${course._id}/forum`, {
         title: newQuestionTitle,
         content: newQuestionContent
       }, {
@@ -123,7 +123,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const token = userInfo?.token;
       
-      await axios.post(`http://localhost:5000/api/forum/${questionId}/reply`, {
+      await axios.post(`https://lms-dg3c.onrender.com/api/forum/${questionId}/reply`, {
         content: replyContent[questionId]
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -146,7 +146,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const token = userInfo?.token;
       
-      await axios.put(`http://localhost:5000/api/forum/${questionId}/upvote`, {}, {
+      await axios.put(`https://lms-dg3c.onrender.com/api/forum/${questionId}/upvote`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -164,7 +164,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
       // Convert answers object to array based on question order
       const answersArray = activeQuiz.questions.map((q, i) => quizAnswers[i] !== undefined ? quizAnswers[i] : -1);
 
-      const { data } = await axios.post(`http://localhost:5000/api/quizzes/${quizId}/submit`, {
+      const { data } = await axios.post(`https://lms-dg3c.onrender.com/api/quizzes/${quizId}/submit`, {
         answers: answersArray
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -200,7 +200,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
       // In a real app we'd map through course.lessons and get the active lessonId
       const dummyLessonId = course.lessons?.[0]?._id || '000000000000000000000000'; 
       
-      await axios.put(`http://localhost:5000/api/enrollments/${course._id}/progress`, {
+      await axios.put(`https://lms-dg3c.onrender.com/api/enrollments/${course._id}/progress`, {
         lessonId: dummyLessonId
       }, config);
       
@@ -226,7 +226,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
     
     try {
       // Check if already enrolled in DB
-      const checkRes = await axios.get(`http://localhost:5000/api/payment/check-enrollment?email=${encodeURIComponent(email)}&courseId=${course._id}`);
+      const checkRes = await axios.get(`https://lms-dg3c.onrender.com/api/payment/check-enrollment?email=${encodeURIComponent(email)}&courseId=${course._id}`);
       
       if (checkRes.data.enrolled) {
          // Already purchased!
@@ -248,13 +248,13 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       // 1. Create order on the backend
-      const orderRes = await axios.post('http://localhost:5000/api/payment/orders', {
+      const orderRes = await axios.post('https://lms-dg3c.onrender.com/api/payment/orders', {
         amount: course.price,
         currency: 'INR',
       }, config);
 
       // 2. Fetch Razorpay key
-      const keyRes = await axios.get('http://localhost:5000/api/payment/config');
+      const keyRes = await axios.get('https://lms-dg3c.onrender.com/api/payment/config');
       const razorpayKeyId = keyRes.data.key;
 
 
@@ -270,7 +270,7 @@ const CoursePreviewModal = ({ course, isOpen, onClose }) => {
         handler: async function (response) {
           try {
             // 4. Verify payment on the backend & enroll user
-            const verifyRes = await axios.post('http://localhost:5000/api/payment/verify', {
+            const verifyRes = await axios.post('https://lms-dg3c.onrender.com/api/payment/verify', {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
